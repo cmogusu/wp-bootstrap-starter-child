@@ -15,6 +15,10 @@ Text Domain:	 wp-bootstrap-starter-child
 	margin-left: 20px;
 	margin-right: 20px;
 }
+.navbar-brand img{
+  width: auto;
+  height: 60px;
+}
 header#masthead{
 	background-color: #fff;
 	padding-top:0;
@@ -165,6 +169,7 @@ body:not(.theme-preset-active) #masthead .wps-main-menu > li.current_page_item >
 	bottom: 0;
 	padding: 20px;
 	z-index: 9;
+  width: 100%;
 }
 .wps-socials .title{
 	color : #777;
@@ -356,6 +361,9 @@ body:not(.theme-preset-active) #masthead .wps-main-menu > li.current_page_item >
 	}
 }
 @media screen and (max-width: 479px) {
+  .navbar-brand img{
+    height: 30px;
+  }
 	.wps-search-but-wrap {
 		top: 20px;
 		right: 30px;

@@ -60,12 +60,7 @@
                 ?>
                 
                 <ul class="navbar-nav mr-right wps-social-nav">
-                    <li class="nav-item active">
-                        <a class="nav-link" href=""><span class="fa fa-facebook"></span></a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#"><span class="fa fa-twitter"></span></a>
-                    </li>
+                    <?php echo wps_get_fb_twitter_icons(); ?>
                     <li class="nav-item ml-1 search">
                         <a class="nav-link wps-toggle-search"><span class="fa fa-search"></span></a>
                     </li>

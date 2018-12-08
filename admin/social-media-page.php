@@ -83,8 +83,7 @@ class wps_social_media_accounts{
 
                 <div class="ui one column centered grid" style="margin-top:40px">
                     <div class="ui segment">
-                        <button class="ui button labeled icon">
-                            <i class="check icon right"></i>
+                        <button class="button button-primary">
                             Save changes
                         </button>
                     </div>

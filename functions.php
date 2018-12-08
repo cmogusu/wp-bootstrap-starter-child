@@ -1,7 +1,7 @@
 <?php
 add_action( 'wp_enqueue_scripts', 'wp_bootstrap_starter_child_enqueue_styles' );
 function wp_bootstrap_starter_child_enqueue_styles() {
-    wp_enqueue_style( 'parent-style', get_template_directory_uri() . '/style.css' ); 
+    wp_enqueue_style( 'parent-style', get_template_directory_uri() . '/style.css',[],'0.2' ); 
 } 
 
 
@@ -119,7 +119,7 @@ add_action('wp_enqueue_scripts', function(){
     // add some js
     wp_enqueue_script('wps-iscroll', $base_url.'/js/iscroll.js', array(), '', true );
     wp_enqueue_script('wps-drawer', $base_url.'/js/drawer.js', array('wps-iscroll'), '', true );
-    wp_enqueue_script('wps-nav', $base_url.'/js/navigation.js', array('wps-drawer'), '', true );
+    wp_enqueue_script('wps-nav', $base_url.'/js/navigation.js', array('wps-drawer'), '0.1', true );
 
     wp_dequeue_style('wp-bootstrap-pro-fontawesome-cdn');
     wp_enqueue_style( 'fontawesome', $base_url.'/css/font-awesome.min.css', '', '' );
@@ -149,12 +149,38 @@ function wps_get_icons(){
     $html = '';
 
     foreach( $defaults as $slug => $account ){
-        $href = isset($socials[$slug]) ? $socials[$slug] : $account['placeholder'];
+        if( !isset($socials[$slug]) ){
+            continue;
+        }
+
         $html .= ''.
         '<li class="list-unstyled list-inline-item '.$slug.'">'.
-            '<a href="'.$href.'" title="'.$account['title'].'" class="fa fa-'.$account['icon_front'].'">'.
+            '<a href="'.$socials[$slug].'" title="'.$account['title'].'" class="fa fa-'.$account['icon_front'].'">'.
             '</a>'.
         '</li>';
+    }
+
+    return $html;
+}
+
+function wps_get_fb_twitter_icons(){
+    require_once 'admin/social-media-page.php';
+
+    $socials = get_option( 'wps_socials' );
+    $defaults = wps_social_media_accounts::get_defaults();
+    $accounts = ['facebook','twitter','instagram','pinterest'];
+    $html = '';
+
+
+    foreach( $accounts as $index => $slug ) {
+        if( isset($socials[$slug]) ){
+            $html .= ''.
+            '<li class="nav-item">'.
+                '<a class="nav-link" href="'.$socials[$slug].'">'.
+                    '<span class="fa fa-'.$slug.'"></span>'.
+                '</a>'.
+            '</li>';
+        }
     }
 
     return $html;

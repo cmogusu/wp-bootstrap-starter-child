@@ -152,7 +152,7 @@ function setUpDrawerMenu( $ ){
 
             var scrollerHeight = wrapperHeight - (headerHeight+footerHeight);
 
-            this.wrapperElement.height( wrapperHeight )
+            this.wrapperElement.css('top',adminMenuHeight).height( wrapperHeight )
             this.drawerScrollerElement.height( scrollerHeight );
         },
 
