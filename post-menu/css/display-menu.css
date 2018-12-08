@@ -1,0 +1,151 @@
+/* fixed navigation menus */
+.static-post-menu .post-inner-menu{
+	-webkit-animation-name: fadeIn;
+  	animation-name: fadeIn;
+  	-webkit-animation-duration: 0.8s;
+	animation-duration: 0.8s;
+	-webkit-animation-fill-mode: both;
+	animation-fill-mode: both;
+}
+.fixed-menu header.site-header,
+.fixed-post-menu .post-inner-menu{
+	position:fixed;
+	top: 0;
+	z-index: 99;
+	-webkit-animation-duration: 0.2s;
+	animation-duration: 0.2s;
+	-webkit-animation-fill-mode: both;
+	animation-fill-mode: both;
+	-webkit-animation-name: slideInDown;
+  	animation-name: slideInDown;
+}
+.fixed-menu header.site-header{
+	width:100%;
+	z-index: 999
+}
+@-webkit-keyframes slideInDown {
+  from {
+    -webkit-transform: translate3d(0, -100%, 0);
+    transform: translate3d(0, -100%, 0);
+    visibility: visible;
+  }
+
+  to {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes slideInDown {
+  from {
+    -webkit-transform: translate3d(0, -100%, 0);
+    transform: translate3d(0, -100%, 0);
+    visibility: visible;
+  }
+
+  to {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@-webkit-keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+/* -- fixed navigation menus */
+
+/* navigation bar in post content */
+.post-inner-menu-wrapper{
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+.post-inner-menu{
+	background: #e8f0fb;
+	padding: 20px 30px;
+}
+.post-inner-menu .owl-stage{
+	padding: 0;
+  margin:0;
+}
+.post-inner-menu .owl-carousel .owl-item{
+	display: inline-block;
+  list-style: none;
+  float:none !important;
+}
+.post-inner-menu .nav-link{
+	padding-right: 20px;
+	color: #6c757d;
+	white-space: nowrap;
+	display: inline-block;
+}
+.post-inner-menu .nav-link:hover{
+	color: #444;
+}
+.post-inner-menu .nav-item a{
+	border-bottom: 1px solid transparent;
+}
+.post-inner-menu .nav-item.featured a{
+	-webkit-transition: all 0.5s ease;
+	transition: all 0.5s ease;
+}
+.fixed-post-menu .post-inner-menu .nav-item.featured a{
+	color: red;
+	border-bottom: 1px solid red;
+}
+/* -- navigation bar in post content */
+
+/* owl carousel */
+.owl-stage-outer:before{
+  content: '';
+  position: absolute;
+  right: -1px;
+  top: 0;
+  bottom: 0;
+  width: 30px;
+  display: block;
+  background: linear-gradient(90deg, rgba(238,238,238,0) 0%, rgb(232, 240, 251,1) 95%);
+  z-index: 3;
+}
+.owl-nav{
+  position: absolute;
+  height: 1px;
+  top: -10px;
+  left:0;
+  right:0;
+  z-index: 4;
+}
+.owl-theme .owl-nav button.owl-prev,
+.owl-theme .owl-nav button.owl-next{
+  position : absolute;
+  border-radius: 50%;
+}
+.owl-theme .owl-nav button.owl-prev span,
+.owl-theme .owl-nav button.owl-next span{
+  font-size: 2rem;
+  line-height: 1.5rem;
+  padding: 0 10px;
+
+}
+.owl-nav .owl-prev{
+  left: -30px;
+}
+.owl-nav .owl-next{
+  right: -30px;
+}
+/* -- owl carousel */
