@@ -9,7 +9,7 @@ class wps_social_media_accounts{
 
 
     public function add_scripts(){
-        $base_url  = get_template_directory_uri().'/navigation';
+        $base_url  = get_theme_file_uri();
 
         wp_enqueue_style('wps-iscroll', $base_url.'/css/font-awesome.min.css' );
         wp_enqueue_style('semantica', 'https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css' );

@@ -97,7 +97,7 @@ function wp_bootstrap_starter_child_enqueue_styles() {
 
     // This section adds a javascript file that makes to the top navigation bar sticky
     add_action('wp_enqueue_scripts', function(){
-        $base_url  = get_template_directory_uri().'-child/post-menu';
+        $base_url  = get_theme_file_uri().'/post-menu';
 
         wp_enqueue_script( 'sticky-top-nav', $base_url.'/js/sticky-top-nav.js', ['jquery','underscore'],'0.5',true );
     });
@@ -114,7 +114,7 @@ function wp_bootstrap_starter_child_enqueue_styles() {
 * The files style the header and enable the menu on the left side of the screen
 */
 add_action('wp_enqueue_scripts', function(){
-    $base_url  = get_template_directory_uri().'-child';
+    $base_url  = get_theme_file_uri();
 
     // add some js
     wp_enqueue_script('wps-iscroll', $base_url.'/js/iscroll.js', array(), '', true );

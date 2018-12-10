@@ -12,7 +12,7 @@ class admin_metabox extends post_inner_menu{
 
     public function enqueue_scripts(){
         $handle = $this->post_meta_key.'admin-metabox';
-        $file_path  = get_template_directory_uri().'/'.basename(__DIR__).'/js/admin-metabox.js';
+        $file_path  = get_theme_file_uri().'/'.basename(__DIR__).'/js/admin-metabox.js';
 
         wp_enqueue_script( $handle, $file_path, ['jquery','jquery-ui-sortable'],'0.2',true );
     }

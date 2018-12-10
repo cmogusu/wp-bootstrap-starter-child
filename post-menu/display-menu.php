@@ -20,7 +20,7 @@ class display_menu extends post_inner_menu{
 
 
     public function enqueue_scripts(){
-    	$base_url  = get_template_directory_uri().'-child/'.basename(__DIR__);
+    	$base_url  = get_theme_file_uri().'/'.basename(__DIR__);
 
     	wp_enqueue_style( 'sticky-post-menu', $base_url.'/css/display-menu.css', [], '0.3', 'all');
     	wp_enqueue_style( 'owlCarousel', $base_url.'/css/owl.carousel.min.css', [], '2.3.4', 'all');
@@ -69,7 +69,7 @@ class display_menu extends post_inner_menu{
 
 
     public function enqueue_tinymce_script($plugin_array){
-	    $plugin_array["post_inner_menu"] =  get_template_directory_uri().'/'.basename(__DIR__).'/js/tinymce.js';
+	    $plugin_array["post_inner_menu"] =  get_theme_file_uri().'/'.basename(__DIR__).'/js/tinymce.js';
 	    return $plugin_array;
 	}
 

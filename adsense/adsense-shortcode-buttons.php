@@ -14,7 +14,7 @@ class adsense_shortcode_buttons{
 
 	
 	public function enqueue_scripts($plugin_array){
-	    $plugin_array["adsense_shortcode"] =  get_template_directory_uri().'/adsense/tinymce.js';
+	    $plugin_array["adsense_shortcode"] =  get_theme_file_uri().'/adsense/tinymce.js';
 	    return $plugin_array;
 	}
 
