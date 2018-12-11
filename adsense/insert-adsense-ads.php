@@ -31,7 +31,7 @@ class insert_adsense_ads{
 	    
 	    $needle 	= '</p>';
 	    $replace 	= '
-			<div class="ad2nd">
+			<div class="ad2nd" data-ad="Paragraph 1 Ad">
 				<script async type="text/javascript" src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 			    <ins class="adsbygoogle"
 			        style="display:block;text-align:center;"
@@ -84,22 +84,24 @@ class insert_adsense_ads{
 
 	public function ads1(){
 	    return '
-			<script async type="text/javascript" src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-			<ins class="adsbygoogle"
-			    style="display:block;text-align:center;"
-			    data-ad-layout="in-article"
-			    data-ad-format="fluid"
-			    data-ad-client="'.$this->client_id.'"
-			    data-ad-slot="4527510283"></ins>
-			<script>
-			    (adsbygoogle=window.adsbygoogle || []).push({})
-			</script>';
+	    	<div class="ad1" data-ad="Ad1">.
+				<script async type="text/javascript" src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+				<ins class="adsbygoogle"
+				    style="display:block;text-align:center;"
+				    data-ad-layout="in-article"
+				    data-ad-format="fluid"
+				    data-ad-client="'.$this->client_id.'"
+				    data-ad-slot="4527510283"></ins>
+				<script>
+				    (adsbygoogle=window.adsbygoogle || []).push({})
+				</script>
+			</div>';
 	}
 
 
 	public function ads2(){
 	    return '
-			<div class="ad300b">
+			<div class="ad300b" data-ad="Ad2 300b">
 			    <script async type="text/javascript" src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 			    <ins class="adsbygoogle"
 			        style="display:block;text-align:center;"
@@ -116,7 +118,7 @@ class insert_adsense_ads{
 
 	public function ads3(){
 		return '
-			<div class="ad300b">
+			<div class="ad300b" data-ad="Ad3 300b">
 			    <script async type="text/javascript" src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 			    <ins class="adsbygoogle"
 			        style="display:block;text-align:center;"
