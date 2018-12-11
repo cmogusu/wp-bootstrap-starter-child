@@ -31,7 +31,7 @@ class insert_adsense_ads{
 	    
 	    $needle 	= '</p>';
 	    $replace 	= '
-			<div class="ad2nd" data-ad="Paragraph 1 Ad">
+			<div class="ad ad2nd">
 				<script async type="text/javascript" src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 			    <ins class="adsbygoogle"
 			        style="display:block;text-align:center;"
@@ -84,7 +84,7 @@ class insert_adsense_ads{
 
 	public function ads1(){
 	    return '
-	    	<div class="ad1" data-ad="Ad1">.
+	    	<div class="ad ad1">.
 				<script async type="text/javascript" src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 				<ins class="adsbygoogle"
 				    style="display:block;text-align:center;"
@@ -101,7 +101,7 @@ class insert_adsense_ads{
 
 	public function ads2(){
 	    return '
-			<div class="ad300b" data-ad="Ad2 300b">
+			<div class="ad ad300a" data-ad="Shortcode [ad300b] Ad">
 			    <script async type="text/javascript" src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 			    <ins class="adsbygoogle"
 			        style="display:block;text-align:center;"
@@ -118,7 +118,7 @@ class insert_adsense_ads{
 
 	public function ads3(){
 		return '
-			<div class="ad300b" data-ad="Ad3 300b">
+			<div class="ad ad300b" data-ad="Shortcode [ad468] Ad">
 			    <script async type="text/javascript" src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 			    <ins class="adsbygoogle"
 			        style="display:block;text-align:center;"

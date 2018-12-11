@@ -29,15 +29,11 @@
 </div><!-- #page -->
 
 <style>
-.ad1,
-.ad2nd,
-.ad300b{
+.ad{
 	position:relative;
 	background: #f1e5e5;
 }
-.ad1:before,
-.ad2nd:before,
-.ad300b:before{
+.ad:before{
 	content: attr(data-ad);
 	position: absolute;
 	padding: 20px;
@@ -45,6 +41,18 @@
 	right:0;
 }
 
+.ad2nd:before{
+	content: 'End of Paragraph 1 Ad';
+}
+.ad1:before{
+	content: 'Shordcode [ad300a] Ad';
+}
+.ad300a:before{
+	content: 'Shortcode [ad300b] Ad';
+}
+.ad300b:before{
+	content: 'Shortcode [ad468] Ad';
+}
 </style>
 <?php wp_footer(); ?>
 </body>
