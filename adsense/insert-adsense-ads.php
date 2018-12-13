@@ -2,7 +2,7 @@
 namespace adsense;
 
 class insert_adsense_ads{
-	private $client_id = 'ca-pub-8260912997569845';
+	private $client_id = 'ca-pub-xxx';
 	private $content_has_image = false;
 
 	public function __construct(){
