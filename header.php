@@ -46,17 +46,19 @@
                 </div>
 
                 <?php
-                    wp_nav_menu(array(
-                        'theme_location'    => 'primary',
-                        'container'       => 'div',
-                        'container_id'    => 'main-nav',
-                        'container_class' => 'collapse navbar-collapse justify-content-start',
-                        'menu_id'         => false,
-                        'menu_class'      => 'navbar-nav wps-main-menu',
-                        'depth'           => 0,
-                        'fallback_cb'     => 'wp_bootstrap_navwalker::fallback',
-                        'walker'          => new wp_bootstrap_navwalker()
-                    ));
+                    if( has_nav_menu( 'primary' ) ){
+                        wp_nav_menu(array(
+                            'theme_location'    => 'primary',
+                            'container'       => 'div',
+                            'container_id'    => 'main-nav',
+                            'container_class' => 'collapse navbar-collapse justify-content-start',
+                            'menu_id'         => false,
+                            'menu_class'      => 'navbar-nav wps-main-menu',
+                            'depth'           => 0,
+                            'fallback_cb'     => 'wp_bootstrap_navwalker::fallback',
+                            'walker'          => new wp_bootstrap_navwalker()
+                        ));
+                    }
                 ?>
                 
                 <ul class="navbar-nav mr-right wps-social-nav">
@@ -93,10 +95,20 @@
             </div>
             <div class="wps-drawer-scroller relative">
                 <div class="iscroll-wrapper">
-                    <div class="iscroll-scroller">
-                        <ul class="drawer-menu">
-                        </ul>
-                    </div>
+                    <?php
+                    if( has_nav_menu( 'drawer' ) ){
+                        wp_nav_menu(array(
+                            'theme_location'    => 'drawer',
+                            'container'       => 'div',
+                            'container_id'    => false,
+                            'container_class' => 'iscroll-scroller',
+                            'menu_id'         => false,
+                            'menu_class'      => 'drawer-menu',
+                            'depth'           => 0,
+                            'walker'          => new wp_bootstrap_navwalker()
+                        ));
+                    }
+                    ?>
                 </div>
             </div>
             <div class="wps-drawer-footer position-absolute" >

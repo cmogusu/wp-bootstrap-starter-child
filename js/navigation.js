@@ -116,7 +116,7 @@ function setUpDrawerMenu( $ ){
             this.toggleDropdown = this.toggleDropdown.bind(this);
             this.setScrollerHeight = this.setScrollerHeight.bind(this);
 
-            if( this.originalMenuElement.length<1 || this.menuElement.length<1 ){
+            if( this.menuElement.length<1 ){
                 $('.wps-menu-toggle').hide();
                 return false;
             }
@@ -158,7 +158,6 @@ function setUpDrawerMenu( $ ){
 
 
         copyNav : function(){
-            var clonedMenu = this.originalMenuElement.clone();
             var editListClasses = function(){
                 $(this).removeClass('nav-item menu-item')
                 .find('a').removeClass('nav-link').removeAttr('data-toggle aria-haspopup').addClass('drawer-menu-item')
@@ -168,9 +167,7 @@ function setUpDrawerMenu( $ ){
                 .children('li').each( editListClasses );
             };
 
-            clonedMenu.children('li').each( editListClasses )
-
-            this.menuElement.html( clonedMenu.html() );
+            this.menuElement.children('li').each( editListClasses )
         },
 
 

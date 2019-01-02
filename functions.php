@@ -185,3 +185,10 @@ function wps_get_fb_twitter_icons(){
 
     return $html;
 }
+
+
+///////////////////////////// Adding a new menu //////////////////////////
+register_nav_menus( array(
+    'primary' => esc_html__( 'Primary', 'wp-bootstrap-starter-child' ),
+    'drawer' => esc_html__( 'Drawer', 'wp-bootstrap-starter-child' ),
+));
