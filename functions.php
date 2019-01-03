@@ -7,22 +7,22 @@ function wp_bootstrap_starter_child_enqueue_styles() {
 
 
 /*
-* This anonymous function wraps the adsense functionality
+* This anonymous function wraps the adverts functionality
 * 
 * It imports the below files
-* 1) The 'toggle-adsense-ads-metabox.php' file displays a metabox with a checkbox to show or hide the adsense ads 
-* 2) The file : 'insert-adsense-ads.php' adds the adsense ad on the post pages after the first paragraph or after the first image in every paragraph. It also sets up shortcodes that display different ads
-* 3) 'Adsense-shortcode-buttons.php' is a small file that adds a button to the wordpress editor. When clicked, the button makes it easier to add the adsense shortcodes.
+* 1) The 'toggle-adverts-metabox.php' file displays a metabox with a checkbox to show or hide the advertisements 
+* 2) The file : 'insert-adverts-ads.php' adds the advertisements on the post pages after the first paragraph or after the first image in every paragraph. It also sets up shortcodes that display different ads
+* 3) 'adverts-shortcode-buttons.php' is a small file that adds a button to the wordpress editor. When clicked, the button makes it easier to add the advertisement shortcodes.
 */
 
 (function(){
-    require('adsense/toggle-adsense-ads-metabox.php');
-    require('adsense/insert-adsense-ads.php');
-    require('adsense/adsense-shortcode-buttons.php');
+    require('advertisements/toggle-adverts-metabox.php');
+    require('advertisements/insert-adverts.php');
+    require('advertisements/adverts-shortcode-buttons.php');
 
-    new \adsense\toggle_adsense_ad_metabox();
-    new \adsense\insert_adsense_ads();
-    new \adsense\adsense_shortcode_buttons();
+    new \advertisements\toggle_adverts_metabox();
+    new \advertisements\insert_adverts();
+    new \advertisements\adverts_shortcode_buttons();
 })();
 
 
