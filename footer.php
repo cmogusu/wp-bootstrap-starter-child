@@ -45,13 +45,13 @@
 	content: 'End of Paragraph 1 Ad';
 }
 .ad1:before{
-	content: 'Shordcode [ad300a] Ad';
+	content: 'Shordcode [advert-1] Ad';
 }
 .ad300a:before{
-	content: 'Shortcode [ad300b] Ad';
+	content: 'Shortcode [advert-2] Ad';
 }
 .ad300b:before{
-	content: 'Shortcode [ad468] Ad';
+	content: 'Shortcode [advert-3] Ad';
 }
 </style>
 <?php wp_footer(); ?>

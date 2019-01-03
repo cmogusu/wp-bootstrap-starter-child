@@ -1,7 +1,7 @@
 (function() {
     tinymce.PluginManager.add('adverts_shortcode', function( editor, url ) {
         editor.addButton( 'adverts_shortcode', {
-            text: 'Advertisement',
+            text: ' Adverts',
             icon: 'backcolor',
             onclick: function() {
                 editor.windowManager.open( {
@@ -12,9 +12,9 @@
                             name   : 'shortcode_no',
                             label  : 'Type : ',
                             values : [
-                                { text: 'Ad300a', value: 'ad300a' },
-                                { text: 'Ad300b', value: 'ad300b' },
-                                { text: 'Ad468', value: 'ad468' }
+                                { text: 'Advert 1', value: 'advert-1' },
+                                { text: 'Advert 2', value: 'advert-2' },
+                                { text: 'Advert 3', value: 'advert-3' }
                             ],
                             value : 'ad300a' // Sets the default
                         }

@@ -14,7 +14,7 @@ class adverts_shortcode_buttons{
 
 	
 	public function enqueue_scripts($plugin_array){
-	    $plugin_array["adverts_shortcode"] =  get_theme_file_uri().'/advertisements/tinymce.js';
+	    $plugin_array["adverts_shortcode"] =  get_theme_file_uri().'/advertisements/tinymce.js?v=5';
 	    return $plugin_array;
 	}
 

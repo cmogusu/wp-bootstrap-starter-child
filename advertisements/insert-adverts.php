@@ -2,7 +2,6 @@
 namespace advertisements;
 
 class insert_adverts{
-	private $client_id = 'ca-pub-xxx';
 	private $content_has_image = false;
 
 	public function __construct(){
@@ -12,6 +11,11 @@ class insert_adverts{
 
     private function add_hooks(){
     	add_filter('the_content', [$this,'process_content'],20 );
+    	add_shortcode( 'advert-1', [$this,'ads1'] );
+    	add_shortcode( 'advert-2',[$this,'ads2'] );
+    	add_shortcode( 'advert-3', [$this,'ads3'] );
+
+    	// added for backward compatibility
     	add_shortcode( 'ad300a', [$this,'ads1'] );
     	add_shortcode( 'ad300b',[$this,'ads2'] );
     	add_shortcode( 'ad468', [$this,'ads3'] );
