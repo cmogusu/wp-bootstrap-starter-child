@@ -24,7 +24,6 @@ function xMakeSticky($){
       this.diferedOnScroll = _.debounce( this.diferedOnScroll, 100 );
       
       if( this.topNavElement.length<1 || this.menuElement.length<1 ){
-        console.log('cant find needed elements')
         return false;
       }
 
