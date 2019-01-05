@@ -1,4 +1,5 @@
 import { SelectControl } from '@wordpress/components'
+//const { SelectControl } = wp.components
 const {registerBlockType} = wp.blocks
 const { __ } = wp.i18n
 
