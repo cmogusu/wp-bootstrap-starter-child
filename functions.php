@@ -42,29 +42,28 @@ function wp_bootstrap_starter_child_enqueue_styles() {
         global $wp_query;
 
         $paged  = (get_query_var('paged')) ? get_query_var('paged') : 1;
-        $postid = $wp_query->post->ID;
 
-        if( is_singular() && get_post_meta( $postid, 'post_featconte1', true ) == "show" ) {
+//echo $wp_query->post->ID; var_dump(get_post_meta( $wp_query->post->ID, 'post_featconte1', true ));die;
+        if( is_singular() && get_post_meta( $wp_query->post->ID, 'post_featconte1', true ) == "show" ) {
             get_template_part( 'featured-content/templates/content', '1' );
         }
     }
 
 
     function featured_contenido2() {
-        $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
         global $wp_query;
-        $postid = $wp_query->post->ID;
-        if( is_singular() && get_post_meta( $postid, 'post_featconte2', true ) == "show" ) {
+
+
+        if( is_singular() && get_post_meta( $wp_query->post->ID, 'post_featconte2', true ) == "show" ) {
             get_template_part( 'featured-content/templates/content', '2' );
         }
     }
 
 
     function featured_contenido3() {
-        $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
         global $wp_query;
-        $postid = $wp_query->post->ID;
-        if( is_singular() && get_post_meta( $postid, 'post_featconte3', true ) == "show" ) {
+
+        if( is_singular() && get_post_meta( $wp_query->post->ID, 'post_featconte3', true ) == "show" ) {
             get_template_part( 'featured-content/templates/content', '3' );
         }
     }

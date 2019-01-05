@@ -32,7 +32,7 @@ class toggle_adverts_metabox{
 
        	$value = (isset($_POST['show_adverts']) && $_POST['show_adverts']=='on') ? 'show' : 'hide';
  
-        update_post_meta( $post->ID, 'show_adverts', $value );
+        update_post_meta( $post->ID, 'show_adsense_ad', $value );
     }
 
 
@@ -49,7 +49,7 @@ class toggle_adverts_metabox{
 			<div class="theAccordion">
 				<input type="checkbox" id="show-adsense-ad" name="show_adverts" 
 				<?php echo ($post_meta=='show') ? 'checked="checked"' : ''; ?> />
-				Show Google ad </br>
+				Show advert after paragraph 1 </br>
 			</div>
 		<?php
     }
