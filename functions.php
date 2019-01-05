@@ -187,8 +187,20 @@ function wps_get_fb_twitter_icons(){
 }
 
 
-///////////////////////////// Adding a new menu //////////////////////////
+/*
+* 
+* Create a new menu location
+*
+*/
 register_nav_menus( array(
     'primary' => esc_html__( 'Primary', 'wp-bootstrap-starter-child' ),
     'drawer' => esc_html__( 'Drawer', 'wp-bootstrap-starter-child' ),
 ));
+
+
+/*
+* 
+* Add gootenburg blocks to editor
+*
+*/
+require('blocks/adverts.php');
