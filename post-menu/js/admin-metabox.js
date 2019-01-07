@@ -22,7 +22,7 @@ jQuery(function($){
 		// This function listens to the button on the metabox and adds a new row when it is clicked.
 		addRowOnButtonClick : function(){
 			if( !this.template || this.tableElement.length<1 ){
-				console.log('Unable to find template element')
+				//console.log('Unable to find template element')
 				return false;
 			}
 
