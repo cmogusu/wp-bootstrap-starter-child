@@ -1041,7 +1041,7 @@
     "@uifabric/utilities" ">=6.29.0 <7.0.0"
     tslib "^1.7.1"
 
-"@uifabric/icons@>=6.4.0 <7.0.0":
+"@uifabric/icons@>=6.4.0 <7.0.0", "@uifabric/icons@^6.4.0":
   version "6.4.0"
   resolved "https://registry.yarnpkg.com/@uifabric/icons/-/icons-6.4.0.tgz#ede79049bebef5f3c44c8d0ec4f460745da324b0"
   integrity sha512-pbKu3OnWaRIeDqMFhicDrrcqicxNqoHpJpknZR9N2xxoPnYMnt2ZOhBNnAxoVVcxHlWkFNg0rvFrOAQGn+S5/Q==

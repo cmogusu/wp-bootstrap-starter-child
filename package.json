@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@handsontable-pro/react": "^2.1.0",
+    "@uifabric/icons": "^6.4.0",
     "handsontable-pro": "^6.2.2",
     "lodash": "^4.17.11",
     "mathjs": "^5.6.0",

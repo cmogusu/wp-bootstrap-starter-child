@@ -15,7 +15,7 @@ class ModelComplexity extends React.Component<Props, State> {
   state = {
     sliderValue: 0,
     modelComplexitySelection: false,
-    isModalVisible: true,
+    isModalVisible: false,
   };
 
   constructor(props) {
