@@ -66,3 +66,13 @@ export function calculateRFR() {
 
   return rfr.predict([[3, 3], [4, 4]]);
 }
+
+export function cleanData(arrayX, arrayY) {
+  return arrayX.map((valueX, index) => {
+    const valueY = arrayY[index];
+
+    return (valueX && valueY)
+      ? valueY / valueX
+      : undefined;
+  });
+}

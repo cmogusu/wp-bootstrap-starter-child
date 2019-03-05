@@ -3,8 +3,6 @@ import { Stack } from 'office-ui-fabric-react/lib/Stack';
 import { mergeStyleSets, DefaultPalette } from 'office-ui-fabric-react/lib/Styling';
 import HandsonTable from '../handson-table/handson-table';
 import PredictionModule from './PredictionModule.js';
-import ModelComplexityWrapper from './ModelComplexityWrapper.js';
-
 
 class Wrapper extends React.Component {
   state = {
@@ -93,7 +91,6 @@ class Wrapper extends React.Component {
             />
           </Stack.Item>
         </Stack>
-        {/* <ModelComplexityWrapper /> */}
       </div>
     );
   }

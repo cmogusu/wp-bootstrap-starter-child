@@ -1,10 +1,18 @@
 import * as React from 'react';
-// import { Checkmark } from 'office-ui-fabric-react/lib/Icons/Checkmark';
 import { Checkbox } from 'office-ui-fabric-react/lib/Checkbox';
 import { Slider } from 'office-ui-fabric-react/lib/Slider';
+import { Label } from 'office-ui-fabric-react/lib/Label';
 import { Modal } from 'office-ui-fabric-react/lib/Modal';
+import { PrimaryButton } from 'office-ui-fabric-react/lib/Button';
 
-type Props = {};
+
+type Props = {
+  isModalVisible: boolean,
+  hideModal: Function,
+  setOptions: Function,
+  useAIModelComplexity: boolean,
+  modelComplexitySliderValue: number,
+};
 
 type State = {
   value: number,
@@ -12,12 +20,6 @@ type State = {
 };
 
 class ModelComplexity extends React.Component<Props, State> {
-  state = {
-    sliderValue: 0,
-    modelComplexitySelection: false,
-    isModalVisible: false,
-  };
-
   constructor(props) {
     super(props);
 
@@ -28,59 +30,67 @@ class ModelComplexity extends React.Component<Props, State> {
   handleCheckboxChange(event) {
     const { currentTarget } = event;
     const { checked } = currentTarget;
+    const { setOptions } = this.props;
 
-    this.setState({ modelComplexitySelection: checked });
+    setOptions({ useAIModelComplexity: checked });
   }
 
 
   render() {
     const {
-      sliderValue,
-      modelComplexitySelection,
+      setOptions,
       isModalVisible,
-    } = this.state;
+      hideModal,
+      useAIModelComplexity,
+      modelComplexitySliderValue,
+    } = this.props;
 
-    const sliderTextValue = sliderValue < 7
-      ? sliderValue : sliderValue === 7
-      ? 'Random Forest' : 'Neural';
+    let sliderTextValue;
+
+    if (modelComplexitySliderValue < 7) {
+      sliderTextValue = modelComplexitySliderValue;
+    } else if (modelComplexitySliderValue === 7) {
+      sliderTextValue = 'Random Forest';
+    } else {
+      sliderTextValue = 'Neural';
+    }
 
     return (
-      <div>
+      <Modal
+        titleAriaId="Model Complexity Selection"
+        isOpen={isModalVisible}
+        onDismiss={hideModal}
+        containerClassName="complexity-modal"
+      >
         <div>
           <Checkbox
             label="AI Model Complexity Selection"
-            value={modelComplexitySelection}
+            value={useAIModelComplexity}
             onChange={this.handleCheckboxChange}
-            checked={modelComplexitySelection}
+            checked={useAIModelComplexity}
           />
         </div>
 
-        <Modal
-          titleAriaId="title aria id"
-          subtitleAriaId="sub title aria id"
-          isOpen={isModalVisible}
-          onDismiss={event => this.setState({ isModalVisible: false })}
-          isBlocking={false}
-          containerClassName="ms-modal-example-container"
-        >
-          {!modelComplexitySelection && (
-            <div>
-              <label>
-                Smoothness/Complexity
-              </label>
-              <Slider
-                label={`Complexity: ${sliderTextValue}`}
-                min={0}
-                max={8}
-                step={1}
-                showValue={0}
-                value={sliderValue}
-                onChange={newValue => this.setState({ sliderValue: newValue })}
-              />
-            </div>
-          )}
-        </Modal>
-      </div>
+        <div>
+          <Label htmlFor="complexity-slider">
+            Smoothness/Complexity
+          </Label>
+          <Slider
+            id="complexity-slider"
+            label={`Complexity: ${sliderTextValue}`}
+            min={0}
+            max={8}
+            step={1}
+            showValue=""
+            value={modelComplexitySliderValue}
+            onChange={newValue => setOptions({ modelComplexitySliderValue: newValue })}
+          />
+        </div>
+
+        <PrimaryButton onClick={hideModal}>
+          Predict
+        </PrimaryButton>
+      </Modal>
     );
   }
 }

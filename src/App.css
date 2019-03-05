@@ -2,3 +2,13 @@
 .ms-Dropdown-container > label{
   display: inline-block;
 }
+.mb-0{
+  margin-bottom: 0;
+}
+body .complexity-modal{
+  width: 90vw;
+  height: 90vh;
+  max-width: 500px;
+  max-height: 500px;
+  padding: 20px;
+}

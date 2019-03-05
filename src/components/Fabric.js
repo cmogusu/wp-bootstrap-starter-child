@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { DefaultButton } from 'office-ui-fabric-react/lib/Button';
+import { Modal } from 'office-ui-fabric-react/lib/Modal';
 import { Stack } from 'office-ui-fabric-react/lib/Stack';
 import { mergeStyleSets, DefaultPalette } from 'office-ui-fabric-react/lib/Styling';
 
@@ -79,6 +80,17 @@ class Fabric extends React.Component<{}, {}> {
           primary={true}
           href="tea"
         />
+
+        <Modal
+          titleAriaId="title aria id"
+          subtitleAriaId="sub title aria id"
+          isOpen
+          onDismiss={console.log}
+          isBlocking={false}
+          containerClassName="ms-modal-example-container"
+        >
+          hello world
+        </Modal>
       </div>
     );
   }

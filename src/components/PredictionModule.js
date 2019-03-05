@@ -3,9 +3,9 @@ import { snakeCase, isNumber } from 'lodash';
 import { Stack } from 'office-ui-fabric-react/lib/Stack';
 import { Label } from 'office-ui-fabric-react/lib/Label';
 import { Dropdown } from 'office-ui-fabric-react/lib/Dropdown';
-import { PrimaryButton, DefaultButton } from 'office-ui-fabric-react/lib/Button';
+import { PrimaryButton, DefaultButton, IconButton } from 'office-ui-fabric-react/lib/Button';
 import { mergeStyleSets } from 'office-ui-fabric-react/lib/Styling';
-import { initializeIcons } from '@uifabric/icons';
+import ModelComplexityWrapper from './ModelComplexityWrapper.js';
 // import { calculateMLR } from '../functions/machine-learning-functions.js';
 
 type Props = {
@@ -13,21 +13,33 @@ type Props = {
   colHeaders?: Array,
 };
 
-class PredictionModule extends React.Component<Props> {
+type State = {
+  inputColumnX: string,
+  inputColumnY: string,
+  isModalVisible: boolean,
+  modelComplexitySliderValue: number,
+  useAIModelComplexity: boolean,
+};
+
+class PredictionModule extends React.Component<Props, State> {
   state = {
     inputColumnX: '',
     inputColumnY: '',
+    isModalVisible: false,
+    modelComplexitySliderValue: 0,
+    useAIModelComplexity: true,
   };
+
 
   constructor(props) {
     super(props);
 
-    initializeIcons();
-
     this.colHeaders = [];
-    this.handleChange = this.handleChange.bind(this);
-    this.handleTrainAndPredict = this.handleTrainAndPredict.bind(this);
+    this.setOptions = this.setOptions.bind(this);
     this.handleReset = this.handleReset.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.toggleIsModalVisible = this.toggleIsModalVisible.bind(this);
+    this.handleTrainAndPredict = this.handleTrainAndPredict.bind(this);
   }
 
   setColumnHeaders() {
@@ -46,7 +58,7 @@ class PredictionModule extends React.Component<Props> {
 
   getSelectOptions(column: string) {
     const { colHeaders: originalColHeaders } = this.props;
-    let colHeaders = originalColHeaders.slice(0);
+    const colHeaders = originalColHeaders.slice(0);
     const otherColumn = column === 'inputColumnX' ? 'inputColumnY' : 'inputColumnX';
 
     return colHeaders
@@ -63,19 +75,14 @@ class PredictionModule extends React.Component<Props> {
   }
 
 
-  trainMLAndGetHypothesis = (arrayX, arrayY) => {
-    if (1) {
-      return x => isNumber(x) ? x * 2 : undefined;
-    }
-
-    return arrayX.map((valueX, index) => {
-      const valueY = arrayY[index];
-
-      return (valueX && valueY)
-        ? valueY / valueX
-        : undefined;
-    });
+  setOptions(options) {
+    this.setState(options);
   }
+
+
+  trainMLAndGetHypothesis = () => (
+    x => (isNumber(x) ? x * 2 : undefined)
+  );
 
 
   handleChange(column, newValue) {
@@ -144,9 +151,10 @@ class PredictionModule extends React.Component<Props> {
     newColHeaders[lastColumnIndex] = `${inputColumnX} Predictions`;
 
     const newSourceData = sourceData.map((dataRow, index) => {
-      dataRow[lastColumnIndex] = preditedValues[index];
+      const dataRowClone = dataRow.slice();
+      dataRowClone[lastColumnIndex] = preditedValues[index];
 
-      return dataRow;
+      return dataRowClone;
     });
 
     hotInstance.loadData(newSourceData);
@@ -164,9 +172,25 @@ class PredictionModule extends React.Component<Props> {
     });
   }
 
+  toggleIsModalVisible() {
+    this.setState((prevState) => {
+      const { isModalVisible } = prevState;
+
+      return {
+        isModalVisible: !isModalVisible,
+      };
+    });
+  }
+
 
   render() {
-    const { inputColumnX, inputColumnY } = this.state;
+    const {
+      inputColumnX,
+      inputColumnY,
+      isModalVisible,
+      useAIModelComplexity,
+      modelComplexitySliderValue,
+    } = this.state;
     const styles = mergeStyleSets({
       item: {
         width: '49%',
@@ -175,8 +199,29 @@ class PredictionModule extends React.Component<Props> {
 
     return (
       <div>
+        <ModelComplexityWrapper
+          isModalVisible={isModalVisible}
+          hideModal={() => this.setState({ isModalVisible: false })}
+          setOptions={this.setOptions}
+          useAIModelComplexity={useAIModelComplexity}
+          modelComplexitySliderValue={modelComplexitySliderValue}
+        />
+
         <div>
-          <h1>Predict</h1>
+          <Stack horizontal verticalAlign="center" padding={10}>
+            <Stack.Item align="start" grow>
+              <h1 className="mb-0">Predict</h1>
+            </Stack.Item>
+
+            <Stack.Item align="end">
+              <IconButton
+                iconProps={{ iconName: 'ChevronRight' }}
+                title="Predict"
+                ariaLabel="Predict"
+                onClick={this.toggleIsModalVisible}
+              />
+            </Stack.Item>
+          </Stack>
           <hr />
 
           <h2>Input</h2>
