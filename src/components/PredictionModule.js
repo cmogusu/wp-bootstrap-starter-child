@@ -1,11 +1,12 @@
 import React from 'react';
-import { snakeCase } from 'lodash';
+import { snakeCase, isNumber } from 'lodash';
 import { Stack } from 'office-ui-fabric-react/lib/Stack';
+import { Label } from 'office-ui-fabric-react/lib/Label';
 import { Dropdown } from 'office-ui-fabric-react/lib/Dropdown';
 import { PrimaryButton, DefaultButton } from 'office-ui-fabric-react/lib/Button';
 import { mergeStyleSets } from 'office-ui-fabric-react/lib/Styling';
 import { initializeIcons } from '@uifabric/icons';
-import { calculateMLR } from '../functions/machine-learning-functions.js';
+// import { calculateMLR } from '../functions/machine-learning-functions.js';
 
 type Props = {
   hotInstance?: {},
@@ -62,6 +63,21 @@ class PredictionModule extends React.Component<Props> {
   }
 
 
+  trainMLAndGetHypothesis = (arrayX, arrayY) => {
+    if (1) {
+      return x => isNumber(x) ? x * 2 : undefined;
+    }
+
+    return arrayX.map((valueX, index) => {
+      const valueY = arrayY[index];
+
+      return (valueX && valueY)
+        ? valueY / valueX
+        : undefined;
+    });
+  }
+
+
   handleChange(column, newValue) {
     const { hotInstance, colHeaders } = this.props;
     const colHeaderIndex = colHeaders.findIndex(
@@ -79,34 +95,73 @@ class PredictionModule extends React.Component<Props> {
   handleTrainAndPredict() {
     const { hotInstance, colHeaders } = this.props;
     const { inputColumnX, inputColumnY } = this.state;
-    let inputColumnXIndex;
-    let inputColumnYIndex;
+    const data = [inputColumnX, inputColumnY];
 
-    if (inputColumnX) {
-      inputColumnXIndex = this.getColumnIndex(inputColumnX);
+    if (!inputColumnX || !inputColumnY) {
+      console.log('please select both X and Y columns');
+      return;
     }
 
-    if (inputColumnY) {
-      inputColumnYIndex = this.getColumnIndex(inputColumnY);
+    const dataValuesArray = data
+      .map(columnName => (
+        colHeaders.findIndex(colHeader => snakeCase(colHeader) === columnName)
+      ))
+      .map(columnIndex => (
+        hotInstance.getDataAtCol(columnIndex)
+      ));
+
+    const cleanedDataValues = [[], []];
+
+    dataValuesArray[0].forEach((dataValue, index) => {
+      const valueX = dataValuesArray[0][index];
+      const valueY = dataValuesArray[1][index];
+
+      if (valueX && valueY) {
+        cleanedDataValues[0].push(valueX);
+        cleanedDataValues[1].push(valueY);
+      }
+    });
+
+    const mlEquation = this.trainMLAndGetHypothesis(dataValuesArray[0], dataValuesArray[1]);
+
+    this.addPredictedValuesColumn(dataValuesArray[0], mlEquation);
+  }
+
+
+  addPredictedValuesColumn(arrayX, mlEquation) {
+    const { inputColumnX } = this.state;
+    const { hotInstance, colHeaders } = this.props;
+    const preditedValues = arrayX.map(dataValue => mlEquation(dataValue));
+
+    const sourceData = hotInstance.getSourceData();
+    const newColHeaders = colHeaders.slice(0);
+    let lastColumnIndex = colHeaders.length;
+
+    while (!hotInstance.isEmptyCol(lastColumnIndex)) {
+      lastColumnIndex += 1;
     }
 
-    const lastColumnIndex = hotInstance.countSourceCols();
-    const newColHeaders = colHeaders.push('new header');
+    newColHeaders[lastColumnIndex] = `${inputColumnX} Predictions`;
 
-    hotInstance.alter('insert_col', lastColumnIndex, 1);
+    const newSourceData = sourceData.map((dataRow, index) => {
+      dataRow[lastColumnIndex] = preditedValues[index];
+
+      return dataRow;
+    });
+
+    hotInstance.loadData(newSourceData);
     hotInstance.updateSettings({
       colHeaders: newColHeaders,
     });
-
-    calculateMLR();
+    hotInstance.selectColumns(lastColumnIndex);
   }
 
 
   handleReset() {
-    const { hotInstance } = this.props;
-
-    this.data = [[]];
-    hotInstance.setData(this.data);
+    this.setState({
+      inputColumnX: '',
+      inputColumnY: '',
+    });
   }
 
 
@@ -129,11 +184,12 @@ class PredictionModule extends React.Component<Props> {
 
           <Stack gap={5} padding={10} horizontal>
             <Stack.Item className={styles.item}>
-              <span>Input Data X</span>
+              <Label htmlFor="dropdown-1">Input Data X</Label>
             </Stack.Item>
 
             <Stack.Item className={styles.item}>
               <Dropdown
+                id="dropdown-1"
                 className="the-dropdown"
                 placeholder="Select a column"
                 ariaLabel="Input Data dropdown"
@@ -146,11 +202,12 @@ class PredictionModule extends React.Component<Props> {
 
           <Stack gap={5} padding={10} horizontal>
             <Stack.Item className={styles.item}>
-              <span>Input Data Y</span>
+              <Label htmlFor="dropdown-2">Input Data Y</Label>
             </Stack.Item>
 
             <Stack.Item className={styles.item}>
               <Dropdown
+                id="dropdown-1"
                 className="the-dropdown"
                 placeholder="Select a column"
                 ariaLabel="Input Data dropdown"

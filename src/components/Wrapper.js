@@ -53,14 +53,14 @@ class Wrapper extends React.Component {
         height: '100vh',
       },
       handsOnTable: {
-        width: '49%',
+        width: '59%',
         padding: '20px',
         background: DefaultPalette.white,
       },
       predict: {
         color: DefaultPalette.white,
         background: '#9fa5b3',
-        width: '49%',
+        width: '39%',
         padding: '10px',
       },
     });
@@ -77,8 +77,8 @@ class Wrapper extends React.Component {
             <HandsonTable
               data={this.data}
               colHeaders={this.colHeaders}
+              minCols={this.colHeaders.length}
               minRows={6}
-              minCols={4}
               dropdownMenu={1}
               licenseKey="00000-00000-00000-00000-00000"
               setHotInstance={this.setHotTable}

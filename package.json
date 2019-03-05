@@ -1,6 +1,7 @@
 {
   "name": "hansontable",
   "version": "0.1.0",
+  "homepage": "http://104.154.160.5/ml",
   "private": true,
   "dependencies": {
     "@handsontable-pro/react": "^2.1.0",
