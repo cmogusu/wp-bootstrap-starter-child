@@ -5,7 +5,7 @@ import { Dropdown } from 'office-ui-fabric-react/lib/Dropdown';
 import { PrimaryButton, DefaultButton } from 'office-ui-fabric-react/lib/Button';
 import { mergeStyleSets } from 'office-ui-fabric-react/lib/Styling';
 import { initializeIcons } from '@uifabric/icons';
-
+import { calculateMLR } from '../functions/machine-learning-functions.js';
 
 type Props = {
   hotInstance?: {},
@@ -23,16 +23,23 @@ class PredictionModule extends React.Component<Props> {
 
     initializeIcons();
 
+    this.colHeaders = [];
     this.handleChange = this.handleChange.bind(this);
     this.handleTrainAndPredict = this.handleTrainAndPredict.bind(this);
     this.handleReset = this.handleReset.bind(this);
   }
 
+  setColumnHeaders() {
+    const { hotInstance } = this.props;
+    let colCount = hotInstance.countSourceCols();
+    const colHeaders = [];
 
-  getColumnIndex(inputColumn) {
-    const { colHeaders } = this.props;
+    while (colCount > 0) {
+      colCount -= 0;
+      colHeaders(hotInstance.getColHeader(colCount));
+    }
 
-    return colHeaders.findIndex(colHeader => colHeader === inputColumn);
+    this.colHeaders = colHeaders;
   }
 
 
@@ -70,6 +77,7 @@ class PredictionModule extends React.Component<Props> {
 
 
   handleTrainAndPredict() {
+    const { hotInstance, colHeaders } = this.props;
     const { inputColumnX, inputColumnY } = this.state;
     let inputColumnXIndex;
     let inputColumnYIndex;
@@ -81,6 +89,16 @@ class PredictionModule extends React.Component<Props> {
     if (inputColumnY) {
       inputColumnYIndex = this.getColumnIndex(inputColumnY);
     }
+
+    const lastColumnIndex = hotInstance.countSourceCols();
+    const newColHeaders = colHeaders.push('new header');
+
+    hotInstance.alter('insert_col', lastColumnIndex, 1);
+    hotInstance.updateSettings({
+      colHeaders: newColHeaders,
+    });
+
+    calculateMLR();
   }
 
 
@@ -111,7 +129,7 @@ class PredictionModule extends React.Component<Props> {
 
           <Stack gap={5} padding={10} horizontal>
             <Stack.Item className={styles.item}>
-              <label>Input Data X</label>
+              <span>Input Data X</span>
             </Stack.Item>
 
             <Stack.Item className={styles.item}>
@@ -128,7 +146,7 @@ class PredictionModule extends React.Component<Props> {
 
           <Stack gap={5} padding={10} horizontal>
             <Stack.Item className={styles.item}>
-              <label>Input Data Y</label>
+              <span>Input Data Y</span>
             </Stack.Item>
 
             <Stack.Item className={styles.item}>
