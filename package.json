@@ -1,0 +1,58 @@
+{
+  "name": "hansontable",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@handsontable-pro/react": "^2.1.0",
+    "handsontable-pro": "^6.2.2",
+    "lodash": "^4.17.11",
+    "mathjs": "^5.6.0",
+    "ml-random-forest": "^1.0.3",
+    "ml-regression-multivariate-linear": "^1.2.0",
+    "ml-regression-polynomial": "^1.0.3",
+    "office-ui-fabric-react": "^6.149.0",
+    "react": "^16.8.1",
+    "react-dom": "^16.8.1",
+    "react-scripts": "2.1.5"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "format": "prettier --write \"**/*.js\""
+  },
+  "eslintConfig": {
+    "extends": "@meteorjs/eslint-config-meteor",
+    "overrides": [
+      {
+        "files": [
+          "*-test.js"
+        ],
+        "excludedFiles": "*.test.js"
+      }
+    ]
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ],
+  "devDependencies": {
+    "@meteorjs/eslint-config-meteor": "^1.0.5",
+    "babel-cli": "^6.26.0",
+    "babel-eslint": "9.0.0",
+    "babel-preset-flow": "^6.23.0",
+    "eslint": "5.12.0",
+    "eslint-config-airbnb": "^17.1.0",
+    "eslint-import-resolver-meteor": "^0.4.0",
+    "eslint-loader": "^2.1.2",
+    "eslint-plugin-import": "^2.16.0",
+    "eslint-plugin-jsx-a11y": "^6.2.1",
+    "eslint-plugin-meteor": "^5.1.0",
+    "eslint-plugin-react": "^7.12.4",
+    "prettier": "^1.16.4",
+    "webpack": "4.28.3"
+  }
+}
