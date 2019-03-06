@@ -1,11 +1,60 @@
 import math from 'mathjs';
-import MLR from 'ml-regression-multivariate-linear';
-import PolynomialRegression from 'ml-regression-polynomial';
-import {
-  RandomForestRegression as RFR,
-  // RandomForestClassifier as RFC,
-} from 'ml-random-forest';
-// import LR from 'ml-regression-simple-linear';
+
+
+const {
+  SimpleLinearRegression: SLR,
+  MultivariateLinearRegression: MLR,
+  PolynomialRegression: PR,
+  RandomForestRegression: RFR,
+} = window.ML;
+
+
+export function removeUndefinedValues(...args) {
+  const filteredArray = [];
+
+  if (args.length < 1) {
+    return [];
+  }
+
+  args[0].forEach((value, index) => {
+    let argsIndex = 0;
+    let hasNullValue = false;
+
+    while (argsIndex < args.length) {
+      if (!args[argsIndex][index]) {
+        hasNullValue = true;
+        break;
+      }
+
+      argsIndex += 1;
+    }
+
+
+    if (!hasNullValue) {
+      argsIndex = 0;
+
+      while (argsIndex < args.length) {
+        filteredArray[argsIndex] = filteredArray[argsIndex] || [];
+        filteredArray[argsIndex].push(args[argsIndex][index]);
+
+        argsIndex += 1;
+      }
+    }
+  });
+
+  return filteredArray;
+}
+
+
+export function removeInputUndefinedValues(inputX, inputY) {
+  const filteredVals = removeUndefinedValues(...inputX, ...inputY);
+
+  return [
+    filteredVals.slice(0, inputX.length),
+    filteredVals.slice(inputX.length),
+  ];
+}
+
 
 export function getTrainingData() {
   const a1 = math.random([10, 2]);
@@ -36,24 +85,64 @@ export function getTrainingData() {
     y: yMulti,
   };
 }
+// predictionData = [[3, 3], [4, 4]]
 
 
-export function calculateMLR() {
-  const { x, y } = getTrainingData();
-  const mlr = new MLR(x, y);
+export function tradeAndPredictSLR(dataX, dataY, predictionData) {
+  const [
+    filteredDataX,
+    filteredDataY,
+  ] = removeInputUndefinedValues(dataX, dataY);
 
-  return mlr.predict([[3, 3], [4, 4]]);
+  const regression = new SLR(filteredDataX[0], filteredDataY[0]);
+
+  return predictionData.map(valueX => (
+    (valueX || valueX === 0) ? regression.predict(valueX) : undefined
+  ));
 }
 
-export function calculatePolynomialRegression() {
-  const { x, y } = getTrainingData();
-  const poly = new PolynomialRegression(x, y, 2);
 
-  return poly.predict([[3, 3], [4, 4]]);
+export function tradeAndPredictMLR(dataX, dataY) {
+  const [
+    filteredDataX,
+    filteredDataY,
+  ] = removeUndefinedValues(dataX, dataY);
+
+  const inputDataX = filteredDataX.map((valueX, index) => (
+    [filteredDataY[index], filteredDataY[index]]
+  ));
+
+  const inputDataY = filteredDataY.map(valueX => [valueX]);
+
+  const mlr = new MLR(inputDataX, inputDataY);
+
+  return mlr.predict(inputDataX);
 }
 
-export function calculateRFR() {
-  const { x, y } = getTrainingData();
+
+export function tradeAndPredictPR(dataX, dataY, predictionData, scale) {
+  /*
+  const [
+    filteredDataX,
+    filteredDataY,
+  ] = removeUndefinedValues(dataX, dataY);
+
+  const poly = new PR(filteredDataX, filteredDataY, scale);
+
+  return poly.predict(filteredDataX);
+  */
+
+  return predictionData[0];
+}
+
+
+export function tradeAndPredictDecisionTree(dataX, dataY, predictionData) {
+  return predictionData[0];
+}
+
+
+export function tradeAndPredictRandomForest(dataX, dataY, predictionData) {
+  /*
   const RFoptions = {
     seed: 3,
     maxFeatures: 2,
@@ -61,18 +150,19 @@ export function calculateRFR() {
     nEstimators: 100,
   };
   const rfr = new RFR(RFoptions);
+  const {
+    cleanedArrayX,
+    cleanedArrayY,
+  } = removeUndefinedValues(dataX, dataY);
 
-  rfr.train(x, y);
+  rfr.train(cleanedArrayX, cleanedArrayY);
 
-  return rfr.predict([[3, 3], [4, 4]]);
+  return rfr.predict(predictionData);
+  */
+  return predictionData[0];
 }
 
-export function cleanData(arrayX, arrayY) {
-  return arrayX.map((valueX, index) => {
-    const valueY = arrayY[index];
 
-    return (valueX && valueY)
-      ? valueY / valueX
-      : undefined;
-  });
+export function tradeAndPredictNeuralNetwork(dataX, dataY, predictionData) {
+  return predictionData[0];
 }

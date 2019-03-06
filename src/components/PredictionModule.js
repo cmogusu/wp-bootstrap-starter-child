@@ -1,12 +1,18 @@
 import React from 'react';
-import { snakeCase, isNumber } from 'lodash';
+import { snakeCase } from 'lodash';
 import { Stack } from 'office-ui-fabric-react/lib/Stack';
 import { Label } from 'office-ui-fabric-react/lib/Label';
 import { Dropdown } from 'office-ui-fabric-react/lib/Dropdown';
 import { PrimaryButton, DefaultButton, IconButton } from 'office-ui-fabric-react/lib/Button';
 import { mergeStyleSets } from 'office-ui-fabric-react/lib/Styling';
 import ModelComplexityWrapper from './ModelComplexityWrapper.js';
-// import { calculateMLR } from '../functions/machine-learning-functions.js';
+import {
+  tradeAndPredictSLR,
+  tradeAndPredictPR,
+  tradeAndPredictDecisionTree,
+  tradeAndPredictRandomForest,
+  tradeAndPredictNeuralNetwork,
+} from '../functions/machine-learning-functions.js';
 
 type Props = {
   hotInstance?: {},
@@ -14,8 +20,8 @@ type Props = {
 };
 
 type State = {
-  inputColumnX: string,
-  inputColumnY: string,
+  inputX: Array,
+  inputY: Array,
   isModalVisible: boolean,
   modelComplexitySliderValue: number,
   useAIModelComplexity: boolean,
@@ -23,8 +29,8 @@ type State = {
 
 class PredictionModule extends React.Component<Props, State> {
   state = {
-    inputColumnX: '',
-    inputColumnY: '',
+    inputX: [],
+    inputY: [],
     isModalVisible: false,
     modelComplexitySliderValue: 0,
     useAIModelComplexity: true,
@@ -57,21 +63,31 @@ class PredictionModule extends React.Component<Props, State> {
 
 
   getSelectOptions(column: string) {
-    const { colHeaders: originalColHeaders } = this.props;
-    const colHeaders = originalColHeaders.slice(0);
-    const otherColumn = column === 'inputColumnX' ? 'inputColumnY' : 'inputColumnX';
+    const { colHeaders } = this.props;
+    const { inputX, inputY } = this.state;
+
+    const previouslySelectedColumns = column === 'inputX' ? inputY : inputX;
 
     return colHeaders
-      .map(colHeader => (
-        (colHeader === 'No' || this.state[otherColumn] === snakeCase(colHeader))
-          ? false
-          : colHeader
-      ))
-      .filter(colHeader => !!colHeader)
-      .map(colHeader => ({
+      .filter(colHeader => (
+        !(colHeader === 'No' || previouslySelectedColumns.includes(snakeCase(colHeader)))
+      )).map(colHeader => ({
         key: snakeCase(colHeader),
         text: colHeader,
       }));
+  }
+
+
+  getColumnValues(columnIds) {
+    const { hotInstance } = this.props;
+
+    const colHeaderIndexes = this.getColumnIndexes(columnIds);
+
+    const data = colHeaderIndexes.map(colHeaderIndex => (
+      hotInstance.getDataAtCol(colHeaderIndex)
+    ));
+
+    return data;
   }
 
 
@@ -80,65 +96,102 @@ class PredictionModule extends React.Component<Props, State> {
   }
 
 
-  trainMLAndGetHypothesis = () => (
-    x => (isNumber(x) ? x * 2 : undefined)
-  );
+  getColumnIndexes(columnIds) {
+    const { colHeaders } = this.props;
+
+    return columnIds.map(columnId => (
+      colHeaders.findIndex(
+        colHeader => snakeCase(colHeader) === columnId,
+      )
+    ));
+  }
 
 
   handleChange(column, newValue) {
-    const { hotInstance, colHeaders } = this.props;
-    const colHeaderIndex = colHeaders.findIndex(
-      colHeader => colHeader === newValue.text,
-    );
+    const { key: inputKey, selected } = newValue;
 
-    hotInstance.selectColumns(colHeaderIndex);
+    this.setState((prevState) => {
+      const { inputX, inputY } = prevState;
+      const inputVals = column === 'inputX' ? inputX : inputY;
 
-    this.setState({
-      [column]: newValue.key,
+      if (selected && !inputVals.includes(inputKey)) {
+        inputVals.push(inputKey);
+      } else if (!selected && inputVals.includes(inputKey)) {
+        const inputValsIndex = inputVals.indexOf(inputKey);
+        inputVals.splice(inputValsIndex, 1);
+      }
+
+      this.highlightColumns(inputVals);
+
+      return {
+        [column]: inputVals,
+      };
     });
+  }
+
+
+  highlightColumns(columnIds) {
+    const { hotInstance } = this.props;
+    const colHeaderIndexes = this.getColumnIndexes(columnIds);
+
+    hotInstance.selectColumns(...colHeaderIndexes.sort());
   }
 
 
   handleTrainAndPredict() {
-    const { hotInstance, colHeaders } = this.props;
-    const { inputColumnX, inputColumnY } = this.state;
-    const data = [inputColumnX, inputColumnY];
+    const { inputX, inputY, modelComplexitySliderValue } = this.state;
 
-    if (!inputColumnX || !inputColumnY) {
-      console.log('please select both X and Y columns');
+    if (inputX.length < 1 || inputY.length < 1) {
+      alert('please select both X and Y columns');
       return;
     }
 
-    const dataValuesArray = data
-      .map(columnName => (
-        colHeaders.findIndex(colHeader => snakeCase(colHeader) === columnName)
-      ))
-      .map(columnIndex => (
-        hotInstance.getDataAtCol(columnIndex)
-      ));
+    const dataX = this.getColumnValues(inputX);
+    const dataY = this.getColumnValues(inputY);
 
-    const cleanedDataValues = [[], []];
 
-    dataValuesArray[0].forEach((dataValue, index) => {
-      const valueX = dataValuesArray[0][index];
-      const valueY = dataValuesArray[1][index];
+    let predictedValues;
+    let inputColumns;
 
-      if (valueX && valueY) {
-        cleanedDataValues[0].push(valueX);
-        cleanedDataValues[1].push(valueY);
-      }
-    });
+    switch (modelComplexitySliderValue) {
+      case 1:
+        inputColumns = inputX.slice(0, 1);
+        predictedValues = tradeAndPredictSLR(dataX, dataY, dataX[0]);
+        break;
 
-    const mlEquation = this.trainMLAndGetHypothesis(dataValuesArray[0], dataValuesArray[1]);
+      case 2:
+      case 3:
+      case 4:
+        inputColumns = inputX;
+        predictedValues = tradeAndPredictPR(dataX, dataY, dataX, modelComplexitySliderValue);
+        break;
 
-    this.addPredictedValuesColumn(dataValuesArray[0], mlEquation);
+      case 5:
+        inputColumns = inputX;
+        predictedValues = tradeAndPredictDecisionTree(dataX, dataY, dataX, 3);
+        break;
+
+      case 6:
+        inputColumns = inputX;
+        predictedValues = tradeAndPredictRandomForest(dataX, dataY, dataX, 3);
+        break;
+
+      case 7:
+        inputColumns = inputX;
+        predictedValues = tradeAndPredictNeuralNetwork(dataX, dataY, dataX, 3);
+        break;
+
+      default:
+        inputColumns = inputX.slice(0, 1);
+        predictedValues = tradeAndPredictSLR(dataX, dataY, dataX[0]);
+    }
+
+    this.addPredictedValuesColumn(predictedValues, inputColumns);
   }
 
 
-  addPredictedValuesColumn(arrayX, mlEquation) {
-    const { inputColumnX } = this.state;
+  addPredictedValuesColumn(predictedValues, inputColumns) {
     const { hotInstance, colHeaders } = this.props;
-    const preditedValues = arrayX.map(dataValue => mlEquation(dataValue));
 
     const sourceData = hotInstance.getSourceData();
     const newColHeaders = colHeaders.slice(0);
@@ -148,11 +201,14 @@ class PredictionModule extends React.Component<Props, State> {
       lastColumnIndex += 1;
     }
 
-    newColHeaders[lastColumnIndex] = `${inputColumnX} Predictions`;
+    const inputXTitles = this.getColumnIndexes(inputColumns).map(
+      index => colHeaders[index],
+    );
+    newColHeaders[lastColumnIndex] = `${inputXTitles.join(' & ')} Predictions`;
 
     const newSourceData = sourceData.map((dataRow, index) => {
       const dataRowClone = dataRow.slice();
-      dataRowClone[lastColumnIndex] = preditedValues[index];
+      dataRowClone[lastColumnIndex] = predictedValues[index];
 
       return dataRowClone;
     });
@@ -167,8 +223,8 @@ class PredictionModule extends React.Component<Props, State> {
 
   handleReset() {
     this.setState({
-      inputColumnX: '',
-      inputColumnY: '',
+      inputX: [],
+      inputY: [],
     });
   }
 
@@ -185,8 +241,8 @@ class PredictionModule extends React.Component<Props, State> {
 
   render() {
     const {
-      inputColumnX,
-      inputColumnY,
+      inputX,
+      inputY,
       isModalVisible,
       useAIModelComplexity,
       modelComplexitySliderValue,
@@ -238,9 +294,10 @@ class PredictionModule extends React.Component<Props, State> {
                 className="the-dropdown"
                 placeholder="Select a column"
                 ariaLabel="Input Data dropdown"
-                options={this.getSelectOptions('inputColumnX')}
-                selectedKeys={inputColumnX}
-                onChange={(event, newValue) => this.handleChange('inputColumnX', newValue)}
+                options={this.getSelectOptions('inputX')}
+                selectedKeys={inputX}
+                onChange={(event, newValue) => this.handleChange('inputX', newValue)}
+                multiSelect
               />
             </Stack.Item>
           </Stack>
@@ -256,9 +313,10 @@ class PredictionModule extends React.Component<Props, State> {
                 className="the-dropdown"
                 placeholder="Select a column"
                 ariaLabel="Input Data dropdown"
-                options={this.getSelectOptions('inputColumnY')}
-                selectedKeys={inputColumnY}
-                onChange={(event, newValue) => this.handleChange('inputColumnY', newValue)}
+                options={this.getSelectOptions('inputY')}
+                selectedKeys={inputY}
+                onChange={(event, newValue) => this.handleChange('inputY', newValue)}
+                multiSelect
               />
             </Stack.Item>
           </Stack>

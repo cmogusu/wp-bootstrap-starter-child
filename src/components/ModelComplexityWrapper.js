@@ -47,12 +47,12 @@ class ModelComplexity extends React.Component<Props, State> {
 
     let sliderTextValue;
 
-    if (modelComplexitySliderValue < 7) {
+    if (modelComplexitySliderValue < 6) {
       sliderTextValue = modelComplexitySliderValue;
-    } else if (modelComplexitySliderValue === 7) {
+    } else if (modelComplexitySliderValue === 6) {
       sliderTextValue = 'Random Forest';
     } else {
-      sliderTextValue = 'Neural';
+      sliderTextValue = 'Neural Network';
     }
 
     return (
@@ -78,8 +78,8 @@ class ModelComplexity extends React.Component<Props, State> {
           <Slider
             id="complexity-slider"
             label={`Complexity: ${sliderTextValue}`}
-            min={0}
-            max={8}
+            min={1}
+            max={7}
             step={1}
             showValue=""
             value={modelComplexitySliderValue}
